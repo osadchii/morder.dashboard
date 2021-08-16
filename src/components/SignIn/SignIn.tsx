@@ -8,6 +8,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import React, {useState} from "react";
+import {AuthService} from "../../services/auth/auth.service";
 
 const Copyright = (): JSX.Element => {
     return (
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.success.main,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -44,18 +46,59 @@ const useStyles = makeStyles((theme) => ({
 
 export const SignIn = (): JSX.Element => {
     const classes = useStyles();
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const onSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        setLoading(true);
+
+
+        const target = event.target as typeof event.target & {
+            email: { value: string };
+            password: { value: string };
+        };
+
+        const email = target.email.value;
+        const password = target.password.value;
+
+        try {
+            const newToken = await AuthService.login({
+                login: email,
+                password
+            });
+
+            console.log(newToken);
+        } catch (error) {
+            const {statusCode} = error.response.data;
+            let message: string;
+            if (statusCode === 401) {
+                message = 'Неверный пароль'
+            } else {
+                message = error.toString();
+            }
+            setErrorMessage(message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Панель управления
                 </Typography>
-                <form className={classes.form} noValidate>
+                <Typography color={"error"}>
+                    {errorMessage}
+                </Typography>
+                <form className={classes.form} noValidate
+                      onSubmit={onSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -83,6 +126,7 @@ export const SignIn = (): JSX.Element => {
                         fullWidth
                         variant="contained"
                         color="primary"
+                        disabled={loading}
                         className={classes.submit}
                     >
                         Войти
@@ -90,7 +134,7 @@ export const SignIn = (): JSX.Element => {
                 </form>
             </div>
             <Box mt={8}>
-                <Copyright />
+                <Copyright/>
             </Box>
         </Container>
     );
