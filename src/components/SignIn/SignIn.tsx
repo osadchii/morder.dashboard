@@ -73,7 +73,8 @@ export const SignIn = (): JSX.Element => {
         } catch (error) {
             const {statusCode} = error.response.data;
             let message: string;
-            if (statusCode === 401) {
+            if (statusCode === 401
+            || statusCode === 400) {
                 message = 'Неверный пароль'
             } else {
                 message = error.toString();
