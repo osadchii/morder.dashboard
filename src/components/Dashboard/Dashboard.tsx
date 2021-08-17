@@ -17,6 +17,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {useState} from "react";
 import {DashboardListItems} from "./DashboardListItems";
 import {DashboardScreens} from "./Dashboard.screens";
+import {Company} from "../Company/Company";
 
 const drawerWidth = 240;
 
@@ -99,12 +100,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const dashboardScreen = (screen: DashboardScreens): JSX.Element => {
+const dashboardScreen = (screen: DashboardScreens,
+                         {token, logout}: DashboardProps): JSX.Element => {
     switch (screen) {
         case DashboardScreens.Dashboard:
-            return <>Dashboad</>
+            return <>Dashboard</>
         case DashboardScreens.Company:
-            return <>Company</>
+            return <Company
+                token={token}
+                logout={logout}/>
     }
 }
 
@@ -134,7 +138,7 @@ export const Dashboard = ({token, logout}: DashboardProps): JSX.Element => {
                         <MenuIcon/>
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
+                        Панель управления
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -162,7 +166,10 @@ export const Dashboard = ({token, logout}: DashboardProps): JSX.Element => {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
-                    {dashboardScreen(screen)}
+                    {dashboardScreen(screen, {
+                        token,
+                        logout
+                    })}
                 </Container>
             </main>
         </div>
