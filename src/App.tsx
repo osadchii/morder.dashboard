@@ -16,7 +16,10 @@ const App = (): JSX.Element => {
     if (!token) {
         return LoginPage(login);
     }
-    return <Dashboard logout={logout}/>
+    return <Dashboard
+        logout={logout}
+        token={token}
+    />
 }
 
 const LoginPage = (login: (authModel: AuthModel) => Promise<void>): JSX.Element => {
