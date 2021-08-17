@@ -10,6 +10,7 @@ import BusinessIcon from "@material-ui/icons/Business";
 import {CompanyModel} from "../../services/company/company.model";
 import React, {useCallback, useEffect, useState} from "react";
 import {CompanyService} from "../../services/company/company.service";
+import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -73,6 +74,26 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
 
         setCompanyData(newCompanyData);
     }
+    const onSubmit = async (event: React.FormEvent): Promise<void> => {
+        event.preventDefault();
+
+        setLoading(true);
+        try {
+            await CompanyService.saveCompanyData(token, companyData);
+        } catch (error) {
+            const {statusCode} = error.response.data;
+            let message = '';
+            if (statusCode === 401
+                || statusCode === 403) {
+                logout();
+            } else {
+                message = error.toString();
+            }
+
+            setErrorMessage(message);
+        }
+        setLoading(false);
+    }
 
     const getCompany = useCallback(async () => {
         try {
@@ -83,7 +104,7 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
             const {statusCode} = error.response.data;
             let message = '';
             if (statusCode === 401
-                || statusCode === 400) {
+                || statusCode === 403) {
                 logout();
             } else {
                 message = error.toString();
@@ -111,7 +132,9 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                 <Typography color={"error"}>
                     {errorMessage}
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate
+                      onSubmit={onSubmit}
+                      method={"post"}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -146,28 +169,30 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                         value={companyData.url}
                         onChange={onChange}
                     />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="inn"
-                        label="ИНН"
-                        name="inn"
-                        value={companyData.inn}
-                        onChange={onChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="kpp"
-                        label="КПП"
-                        name="kpp"
-                        value={companyData.kpp}
-                        onChange={onChange}
-                    />
+                    <Box display="row">
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="inn"
+                            label="ИНН"
+                            name="inn"
+                            value={companyData.inn}
+                            onChange={onChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="kpp"
+                            label="КПП"
+                            name="kpp"
+                            value={companyData.kpp}
+                            onChange={onChange}
+                        />
+                    </Box>
                     <Button
                         type="submit"
                         fullWidth

@@ -84,7 +84,7 @@ export const SignIn = ({login}: SignInProps): JSX.Element => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component={"div"} maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -97,7 +97,8 @@ export const SignIn = ({login}: SignInProps): JSX.Element => {
                     {errorMessage}
                 </Typography>
                 <form className={classes.form} noValidate
-                      onSubmit={onSubmit}>
+                      onSubmit={onSubmit}
+                      method={"post"}>
                     <TextField
                         variant="outlined"
                         margin="normal"
