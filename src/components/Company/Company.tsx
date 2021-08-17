@@ -10,7 +10,6 @@ import BusinessIcon from "@material-ui/icons/Business";
 import {CompanyModel} from "../../services/company/company.model";
 import React, {useCallback, useEffect, useState} from "react";
 import {CompanyService} from "../../services/company/company.service";
-import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const Company = ({token, logout}: DashboardProps): JSX.Element => {
 
+    const classes = useStyles();
+
     const defaultData: CompanyModel = {
         shopName: '',
         companyName: '',
@@ -45,6 +46,25 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
     const [companyData, setCompanyData] = useState(defaultData);
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const getCompany = useCallback(async () => {
+        try {
+            const company = await CompanyService.getCompanyData(token);
+            setCompanyData(company);
+            setLoading(false);
+        } catch (error) {
+            const {statusCode} = error.response.data;
+            let message = '';
+            if (statusCode === 401
+                || statusCode === 403) {
+                logout();
+            } else {
+                message = error.toString();
+            }
+
+            setErrorMessage(message);
+        }
+    }, []);
 
     const onChange = (event: React.ChangeEvent): void => {
         const target = event.target as typeof event.target & {
@@ -95,32 +115,12 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
         setLoading(false);
     }
 
-    const getCompany = useCallback(async () => {
-        try {
-            const company = await CompanyService.getCompanyData(token);
-            setCompanyData(company);
-            setLoading(false);
-        } catch (error) {
-            const {statusCode} = error.response.data;
-            let message = '';
-            if (statusCode === 401
-                || statusCode === 403) {
-                logout();
-            } else {
-                message = error.toString();
-            }
-
-            setErrorMessage(message);
-        }
-    }, []);
-
     useEffect(() => {
         getCompany();
     }, [getCompany]);
 
-    const classes = useStyles();
-
-    return (<Container component="main" maxWidth="xs">
+    return (
+        <Container component="main" maxWidth={"md"}>
             <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -169,30 +169,28 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                         value={companyData.url}
                         onChange={onChange}
                     />
-                    <Box display="row">
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="inn"
-                            label="ИНН"
-                            name="inn"
-                            value={companyData.inn}
-                            onChange={onChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="kpp"
-                            label="КПП"
-                            name="kpp"
-                            value={companyData.kpp}
-                            onChange={onChange}
-                        />
-                    </Box>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="inn"
+                        label="ИНН"
+                        name="inn"
+                        value={companyData.inn}
+                        onChange={onChange}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="kpp"
+                        label="КПП"
+                        name="kpp"
+                        value={companyData.kpp}
+                        onChange={onChange}
+                    />
                     <Button
                         type="submit"
                         fullWidth
