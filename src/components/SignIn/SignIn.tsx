@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import React, {useState} from "react";
-import {AuthService} from "../../services/auth/auth.service";
+import {SignInProps} from "./SignIn.props";
 
 const Copyright = (): JSX.Element => {
     return (
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.success.main,
+        backgroundColor: theme.palette.primary.main,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const SignIn = (): JSX.Element => {
+export const SignIn = ({login}: SignInProps): JSX.Element => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -64,12 +64,10 @@ export const SignIn = (): JSX.Element => {
         const password = target.password.value;
 
         try {
-            const newToken = await AuthService.login({
+            await login({
                 login: email,
                 password
             });
-
-            console.log(newToken);
         } catch (error) {
             const {statusCode} = error.response.data;
             let message: string;

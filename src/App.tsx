@@ -1,8 +1,27 @@
-import {SignIn} from "./components";
+import {Dashboard, SignIn} from "./components";
+import {useState} from "react";
+import {AuthService} from "./services/auth/auth.service";
+import {AuthModel} from "./services/auth/auth.model";
 
-function App(): JSX.Element {
+const App = (): JSX.Element => {
+    const [token, setToken] = useState(AuthService.getTokenFromStorage());
+
+    const login = async (authModel: AuthModel): Promise<void> => {
+        await AuthService.login(authModel, setToken);
+    }
+    const logout = (): void => {
+        AuthService.logout(setToken);
+    }
+
+    if (!token) {
+        return LoginPage(login);
+    }
+    return <Dashboard logout={logout}/>
+}
+
+const LoginPage = (login: (authModel: AuthModel) => Promise<void>): JSX.Element => {
     return (
-        <SignIn/>
+        <SignIn login={login}/>
     );
 }
 
