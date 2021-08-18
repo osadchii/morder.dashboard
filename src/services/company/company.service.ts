@@ -1,11 +1,10 @@
-import {API_BASE_URL} from "../api.constants";
 import axios from "axios";
 import {CompanyModel} from "./company.model";
 import {ApiService} from "../api.service";
 
 export class CompanyService {
-    private static readonly getCompanyUrl = `${API_BASE_URL}/company/`
-    private static readonly postCompanyUrl = `${API_BASE_URL}/company/`
+    private static readonly getCompanyUrl = `${process.env.REACT_APP_API_BASE_URL}/company/`
+    private static readonly postCompanyUrl = `${process.env.REACT_APP_API_BASE_URL}/company/`
 
     static async getCompanyData(token: string): Promise<CompanyModel> {
         const response = await axios.get(this.getCompanyUrl, {

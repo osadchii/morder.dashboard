@@ -1,11 +1,10 @@
-import {API_BASE_URL} from "../api.constants";
 import axios from "axios";
 import {ProductGetPageModel} from "./product.getpage.model";
 import {ApiService} from "../api.service";
 import {ProductModel} from "./product.model";
 
 export class ProductService {
-    private static readonly getProductPageUrl = `${API_BASE_URL}/product/getpage`
+    private static readonly getProductPageUrl = `${process.env.REACT_APP_API_BASE_URL}/product/getpage`
 
     static async getProductPage(token: string, page: number, perPage: number): Promise<ProductModel[]> {
         const body: ProductGetPageModel = {

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../nodejs/nestjs/morder/.idea/Morder.iml" filepath="$PROJECT_DIR$/../../../nodejs/nestjs/morder/.idea/Morder.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/morder.dashboard.iml" filepath="$PROJECT_DIR$/.idea/morder.dashboard.iml" />
     </modules>
   </component>

@@ -1,9 +1,8 @@
 import {AuthModel} from "./auth.model";
 import axios from "axios";
-import {API_BASE_URL} from "../api.constants";
 
 export class AuthService {
-    private static readonly loginUrl = `${API_BASE_URL}/auth/login`;
+    private static readonly loginUrl = `${process.env.REACT_APP_API_BASE_URL}/auth/login`;
     private static readonly tokenKey = 'token';
 
     static async login(authModel: AuthModel, setToken: (token: string) => void): Promise<void> {
