@@ -77,17 +77,20 @@ export const Catalog = ({token, logout}: DashboardProps): JSX.Element => {
 
     const classes = useStyles();
 
+    const pageSize = 48;
+
     const [errorMessage, setErrorMessage] = useState('');
     const [page, setPage] = useState(1);
-    const [totalPages, _] = useState(15);
+    const [totalPages, setTotalPages] = useState(15);
     const [rows, setRows] = useState([] as ProductModel[]);
     const [loading, setLoading] = useState(true);
 
     const getProducts = async () => {
         setLoading(true);
         try {
-            const products = await ProductService.getProductPage(token, page, 48);
-            setRows(products);
+            const products = await ProductService.getProductPage(token, page, pageSize);
+            setRows(products.items);
+            setTotalPages(products.count / pageSize)
         } catch (error) {
             const {statusCode} = error.response.data;
             let message = '';

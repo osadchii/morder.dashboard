@@ -1,12 +1,12 @@
 import axios from "axios";
 import {ProductGetPageModel} from "./product.getpage.model";
 import {ApiService} from "../api.service";
-import {ProductModel} from "./product.model";
+import {ProductPageModel} from "./product.page.model";
 
 export class ProductService {
     private static readonly getProductPageUrl = `${process.env.REACT_APP_API_BASE_URL}/product/getpage`
 
-    static async getProductPage(token: string, page: number, perPage: number): Promise<ProductModel[]> {
+    static async getProductPage(token: string, page: number, perPage: number): Promise<ProductPageModel> {
         const body: ProductGetPageModel = {
             limit: perPage,
             offset: (page - 1) * perPage
@@ -18,7 +18,7 @@ export class ProductService {
             }
         });
         console.log(response);
-        return response.data as typeof response.data & ProductModel[];
+        return response.data as typeof response.data & ProductPageModel;
     }
 
 }

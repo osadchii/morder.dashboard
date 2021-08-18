@@ -7,4 +7,6 @@ export interface ProductModel {
     barcode: string;
     articul: string;
     brand?: string;
+    price: number;
+    stock: number;
 }
