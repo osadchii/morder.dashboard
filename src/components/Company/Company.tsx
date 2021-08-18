@@ -39,8 +39,6 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
         shopName: '',
         companyName: '',
         url: '',
-        inn: '',
-        kpp: ''
     }
 
     const [companyData, setCompanyData] = useState(defaultData);
@@ -64,7 +62,7 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
 
             setErrorMessage(message);
         }
-    }, []);
+    }, [token]);
 
     const onChange = (event: React.ChangeEvent): void => {
         const target = event.target as typeof event.target & {
@@ -83,12 +81,6 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                 break;
             case 'url':
                 newCompanyData.url = value;
-                break;
-            case 'inn':
-                newCompanyData.inn = value;
-                break;
-            case 'kpp':
-                newCompanyData.kpp = value;
                 break;
         }
 
@@ -143,7 +135,6 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                         id="shopName"
                         label="Название магазина"
                         name="shopName"
-                        autoFocus
                         value={companyData.shopName}
                         onChange={onChange}
                     />
@@ -167,28 +158,6 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
                         label="Адрес сайта"
                         name="url"
                         value={companyData.url}
-                        onChange={onChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="inn"
-                        label="ИНН"
-                        name="inn"
-                        value={companyData.inn}
-                        onChange={onChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="kpp"
-                        label="КПП"
-                        name="kpp"
-                        value={companyData.kpp}
                         onChange={onChange}
                     />
                     <Button

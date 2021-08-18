@@ -18,6 +18,7 @@ import {useState} from "react";
 import {DashboardListItems} from "./DashboardListItems";
 import {DashboardScreens} from "./Dashboard.screens";
 import {Company} from "../Company/Company";
+import {Catalog} from "../Catalog/Catalog";
 
 const drawerWidth = 240;
 
@@ -107,6 +108,10 @@ const dashboardScreen = (screen: DashboardScreens,
             return <>Dashboard</>
         case DashboardScreens.Company:
             return <Company
+                token={token}
+                logout={logout}/>
+        case DashboardScreens.Catalog:
+            return <Catalog
                 token={token}
                 logout={logout}/>
     }

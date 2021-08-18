@@ -4,6 +4,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {DashboardListItemsProps} from "./DashboardListItems.props";
 import {DashboardScreens} from "./Dashboard.screens";
+import {AllInbox} from "@material-ui/icons";
 
 export const DashboardListItems = ({logout, setScreen}: DashboardListItemsProps): JSX.Element => {
     const showDashboard = (): void => {
@@ -11,6 +12,9 @@ export const DashboardListItems = ({logout, setScreen}: DashboardListItemsProps)
     };
     const showCompany = (): void => {
         setScreen(DashboardScreens.Company)
+    };
+    const showCatalog = (): void => {
+        setScreen(DashboardScreens.Catalog)
     };
     return (
         <div>
@@ -27,6 +31,13 @@ export const DashboardListItems = ({logout, setScreen}: DashboardListItemsProps)
                     <BusinessIcon/>
                 </ListItemIcon>
                 <ListItemText primary="Компания"/>
+            </ListItem>
+            <ListItem button
+                      onClick={showCatalog}>
+                <ListItemIcon>
+                    <AllInbox/>
+                </ListItemIcon>
+                <ListItemText primary="Каталог"/>
             </ListItem>
             <Divider/>
             <ListItem button
