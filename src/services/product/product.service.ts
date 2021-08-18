@@ -1,0 +1,25 @@
+import {API_BASE_URL} from "../api.constants";
+import axios from "axios";
+import {ProductGetPageModel} from "./product.getpage.model";
+import {ApiService} from "../api.service";
+import {ProductModel} from "./product.model";
+
+export class ProductService {
+    private static readonly getProductPageUrl = `${API_BASE_URL}/product/getpage`
+
+    static async getProductPage(token: string, page: number, perPage: number): Promise<ProductModel[]> {
+        const body: ProductGetPageModel = {
+            limit: perPage,
+            offset: (page - 1) * perPage
+        };
+
+        const response = await axios.post(this.getProductPageUrl, body, {
+            headers: {
+                ...ApiService.AuthorizationHeaders(token)
+            }
+        });
+        console.log(response);
+        return response.data as typeof response.data & ProductModel[];
+    }
+
+}

@@ -92,6 +92,7 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
         setLoading(true);
         try {
             await CompanyService.saveCompanyData(token, companyData);
+            setErrorMessage('');
         } catch (error) {
             const {statusCode} = error.response.data;
             let message = '';
@@ -112,7 +113,7 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
     }, [getCompany]);
 
     return (
-        <Container component="main" maxWidth={"md"}>
+        <Container component="div" maxWidth={"md"}>
             <CssBaseline/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
