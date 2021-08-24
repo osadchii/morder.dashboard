@@ -111,6 +111,7 @@ export const Dashboard = (): JSX.Element => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -126,7 +127,7 @@ export const Dashboard = (): JSX.Element => {
             <MenuIcon />
           </IconButton>
           <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
-            Панель управления
+            M-Order — Панель управления
           </Typography>
         </Toolbar>
       </AppBar>

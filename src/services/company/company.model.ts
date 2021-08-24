@@ -1,5 +1,5 @@
 export interface CompanyModel {
-    shopName: string;
-    companyName: string;
-    url: string;
+  shopName: string;
+  companyName: string;
+  url: string;
 }
