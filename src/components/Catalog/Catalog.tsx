@@ -1,10 +1,9 @@
-import {DashboardProps} from "../Dashboard/Dashboard.props";
-import {Container, Typography} from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {ProductTable} from "./ProductTable";
-import {makeStyles} from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import {AllInbox} from "@material-ui/icons";
+import { Container, Typography } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ProductTable } from './ProductTable';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import { AllInbox } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,24 +27,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Catalog = ({token, logout}: DashboardProps): JSX.Element => {
+export const Catalog = (): JSX.Element => {
 
     const classes = useStyles();
 
     return (
-        <Container component="div" maxWidth={"xl"}>
-            <CssBaseline/>
+      <Container component='div' maxWidth={'xl'}>
+          <CssBaseline />
 
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <AllInbox/>
+          <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                  <AllInbox />
                 </Avatar>
-                <Typography component="h1" variant="h5">
-                    Каталог
-                </Typography>
-                <ProductTable
-                    token={token}
-                    logout={logout}/>
+              <Typography component='h1' variant='h5'>
+                  Каталог
+              </Typography>
+              <ProductTable />
             </div>
         </Container>
     );

@@ -8,13 +8,14 @@ import {
     TableRow,
     Typography,
     withStyles,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
-import {ProductModel, ProductType} from "../../services/product/product.model";
-import {ProductService} from "../../services/product/product.service";
-import {makeStyles} from "@material-ui/core/styles";
-import {DashboardProps} from "../Dashboard/Dashboard.props";
+} from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ProductModel, ProductType } from '../../services/product/product.model';
+import { ProductService } from '../../services/product/product.service';
+import { makeStyles } from '@material-ui/core/styles';
+import { AuthService } from '../../services/auth/auth.service';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -69,7 +70,9 @@ function readableProductType(productType: ProductType): string {
     }
 }
 
-export const ProductTable = ({token, logout}: DashboardProps): JSX.Element => {
+export const ProductTable = (): JSX.Element => {
+
+    const history = useHistory();
 
     const classes = useStyles();
 
@@ -84,7 +87,7 @@ export const ProductTable = ({token, logout}: DashboardProps): JSX.Element => {
     const getProducts = async () => {
         setLoading(true);
         try {
-            const products = await ProductService.getProductPage(token, page, pageSize);
+            const products = await ProductService.getProductPage(page, pageSize);
             setRows(products.items);
             setTotalPages(Math.ceil(products.count / pageSize));
         } catch (error) {
@@ -92,7 +95,8 @@ export const ProductTable = ({token, logout}: DashboardProps): JSX.Element => {
             let message = '';
             if (statusCode === 401
                 || statusCode === 403) {
-                logout();
+                AuthService.logout();
+                history.push('/login');
             } else {
                 message = error.toString();
             }
@@ -104,7 +108,7 @@ export const ProductTable = ({token, logout}: DashboardProps): JSX.Element => {
 
     const getProductsCallback = useCallback(async () => {
         await getProducts();
-    }, [token, page]);
+    }, [page]);
 
     useEffect(() => {
         getProductsCallback();

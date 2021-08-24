@@ -1,15 +1,16 @@
-import {DashboardProps} from "../Dashboard/Dashboard.props";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
-import {makeStyles} from "@material-ui/core/styles";
-import BusinessIcon from "@material-ui/icons/Business";
-import {CompanyModel} from "../../services/company/company.model";
-import React, {useCallback, useEffect, useState} from "react";
-import {CompanyService} from "../../services/company/company.service";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import BusinessIcon from '@material-ui/icons/Business';
+import { CompanyModel } from '../../services/company/company.model';
+import React, { useCallback, useEffect, useState } from 'react';
+import { CompanyService } from '../../services/company/company.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Company = ({token, logout}: DashboardProps): JSX.Element => {
+export const Company = (): JSX.Element => {
+
+    const history = useHistory();
 
     const classes = useStyles();
 
@@ -39,7 +42,7 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
         shopName: '',
         companyName: '',
         url: '',
-    }
+    };
 
     const [companyData, setCompanyData] = useState(defaultData);
     const [loading, setLoading] = useState(true);
@@ -47,22 +50,23 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
 
     const getCompany = useCallback(async () => {
         try {
-            const company = await CompanyService.getCompanyData(token);
+            const company = await CompanyService.getCompanyData();
             setCompanyData(company);
             setLoading(false);
         } catch (error) {
             const {statusCode} = error.response.data;
             let message = '';
             if (statusCode === 401
-                || statusCode === 403) {
-                logout();
+              || statusCode === 403) {
+                AuthService.logout();
+                history.push('/login');
             } else {
                 message = error.toString();
             }
 
             setErrorMessage(message);
         }
-    }, [token]);
+    }, []);
 
     const onChange = (event: React.ChangeEvent): void => {
         const target = event.target as typeof event.target & {
@@ -91,14 +95,15 @@ export const Company = ({token, logout}: DashboardProps): JSX.Element => {
 
         setLoading(true);
         try {
-            await CompanyService.saveCompanyData(token, companyData);
+            await CompanyService.saveCompanyData(companyData);
             setErrorMessage('');
         } catch (error) {
             const {statusCode} = error.response.data;
             let message = '';
             if (statusCode === 401
                 || statusCode === 403) {
-                logout();
+                AuthService.logout();
+                history.push('/login');
             } else {
                 message = error.toString();
             }

@@ -6,136 +6,145 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import React, {useState} from "react";
-import {SignInProps} from "./SignIn.props";
+import React, { useEffect, useState } from 'react';
+import { AuthService } from '../../services/auth/auth.service';
+import { useHistory } from 'react-router-dom';
 
 const Copyright = (): JSX.Element => {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="http://m.osdc.ru">
-                MOrder
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+  return (
+    <Typography variant='body2' color='textSecondary' align='center'>
+      {'Copyright © '}
+      <Link color='inherit' href='http://m.osdc.ru'>
+        MOrder
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-export const SignIn = ({login}: SignInProps): JSX.Element => {
-    const classes = useStyles();
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+export const SignIn = (): JSX.Element => {
+  const classes = useStyles();
 
-    const onSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-        setLoading(true);
+  useEffect(() => {
+    if (AuthService.isAuthorized()) {
+      history.push('/');
+    }
+  }, []);
 
+  const onSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-        const target = event.target as typeof event.target & {
-            email: { value: string };
-            password: { value: string };
-        };
+    setLoading(true);
 
-        const email = target.email.value;
-        const password = target.password.value;
-
-        try {
-            await login({
-                login: email,
-                password
-            });
-        } catch (error) {
-            const {statusCode} = error.response.data;
-            let message: string;
-            if (statusCode === 401
-            || statusCode === 400) {
-                message = 'Неверный пароль'
-            } else {
-                message = error.toString();
-            }
-            setErrorMessage(message);
-        } finally {
-            setLoading(false);
-        }
+    const target = event.target as typeof event.target & {
+      email: { value: string };
+      password: { value: string };
     };
 
-    return (
-        <Container component={"div"} maxWidth="xs">
-            <CssBaseline/>
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Панель управления
-                </Typography>
-                <Typography color={"error"}>
-                    {errorMessage}
-                </Typography>
-                <form className={classes.form} noValidate
-                      onSubmit={onSubmit}
-                      method={"post"}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Электронная почта"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Пароль"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        disabled={loading}
-                        className={classes.submit}
-                    >
-                        Войти
-                    </Button>
-                </form>
-            </div>
-            <Box mt={8}>
-                <Copyright/>
-            </Box>
-        </Container>
-    );
-}
+    const email = target.email.value;
+    const password = target.password.value;
+
+    try {
+      await AuthService.login({
+        login: email,
+        password,
+      });
+      history.push('/');
+    } catch (error) {
+      const { statusCode } = error.response.data;
+      let message: string;
+      if (statusCode === 401
+        || statusCode === 400) {
+        message = 'Неверный пароль';
+      } else {
+        message = error.toString();
+      }
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container component={'div'} maxWidth='xs'>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component='h1' variant='h5'>
+          Панель управления
+        </Typography>
+        <Typography color={'error'}>
+          {errorMessage}
+        </Typography>
+        <form className={classes.form} noValidate
+              onSubmit={onSubmit}
+              method={'post'}>
+          <TextField
+            variant='outlined'
+            margin='normal'
+            required
+            fullWidth
+            id='email'
+            label='Электронная почта'
+            name='email'
+            autoComplete='email'
+            autoFocus
+          />
+          <TextField
+            variant='outlined'
+            margin='normal'
+            required
+            fullWidth
+            name='password'
+            label='Пароль'
+            type='password'
+            id='password'
+            autoComplete='current-password'
+          />
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            color='primary'
+            disabled={loading}
+            className={classes.submit}
+          >
+            Войти
+          </Button>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
+};
