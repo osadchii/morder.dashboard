@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
 export class ProductService {
   private static readonly getProductPageUrl = `${process.env.REACT_APP_API_BASE_URL}/product/getpage`;
 
-  static async getProductPage(page: number, perPage: number, categoryCode?: string): Promise<ProductPageModel> {
+  static async getProductPage(page: number, perPage: number, categoryCode?: string, searchString?: string): Promise<ProductPageModel> {
     const body: ProductGetPageModel = {
       limit: perPage,
       offset: (page - 1) * perPage,
@@ -17,7 +17,9 @@ export class ProductService {
       body.categoryCode = categoryCode;
     }
 
-    console.log(body);
+    if (typeof searchString !== 'undefined') {
+      body.text = searchString;
+    }
 
     const response = await axios.post(this.getProductPageUrl, body, {
       headers: {

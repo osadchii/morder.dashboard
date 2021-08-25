@@ -1,10 +1,10 @@
-import { Box, Container, Grid, Switch, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Switch, TextField, Typography } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ProductTable } from './ProductTable';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { AllInbox } from '@material-ui/icons';
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { CategoryTable } from './CategoryTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +18,19 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
+  searchField: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(3),
+      width: '500px',
+    },
+  },
 }));
 
 export const Catalog = (): JSX.Element => {
 
   const classes = useStyles();
   const [currentCategory, setCategory] = useState('');
+  const [searchString, setSearchString] = useState('');
   const [showCategories, setShowCategories] = useState(true);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +38,17 @@ export const Catalog = (): JSX.Element => {
     if (!showCategories) {
       setCategory('');
     }
+  };
+
+  const onSearchSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const target = event.target as typeof event.target & {
+      search: { value: string };
+    };
+
+    const searchString = target.search.value;
+    setSearchString(searchString);
   };
 
   return (
@@ -66,6 +84,16 @@ export const Catalog = (): JSX.Element => {
             </Typography>
           </Box>
         </Box>
+
+        <div className={classes.searchField}>
+          <form method={'post'} onSubmit={onSearchSubmit}>
+            <TextField id={'search'}
+                       name={'search'}
+                       label={'Поиск товаров'}
+                       type={'search'}
+            />
+          </form>
+        </div>
         <Grid component='label' container spacing={2}>
           {showCategories &&
           <Grid item xs={4}>
@@ -73,7 +101,8 @@ export const Catalog = (): JSX.Element => {
                            setCategory={setCategory} />
           </Grid>}
           <Grid item xs={(showCategories ? 8 : 12)}>
-            <ProductTable categoryCode={showCategories ? currentCategory : undefined} />
+            <ProductTable categoryCode={showCategories ? currentCategory : undefined}
+                          searchString={searchString ? searchString : undefined} />
           </Grid>
         </Grid>
       </div>

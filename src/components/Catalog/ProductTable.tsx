@@ -72,13 +72,13 @@ function readableProductType(productType: ProductType): string {
   }
 }
 
-export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element => {
+export const ProductTable = ({ categoryCode, searchString }: ProductTableProps): JSX.Element => {
 
   const history = useHistory();
 
   const classes = useStyles();
 
-  const pageSize = 48;
+  const pageSize = 20;
 
   const [errorMessage, setErrorMessage] = useState('');
   const [page, setPage] = useState(1);
@@ -89,7 +89,7 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
   const getProducts = async () => {
     setLoading(true);
     try {
-      const products = await ProductService.getProductPage(page, pageSize, categoryCode);
+      const products = await ProductService.getProductPage(page, pageSize, categoryCode, searchString);
       setRows(products.items);
       const totalPages = Math.ceil(products.count / pageSize);
       setTotalPages(totalPages);
@@ -111,7 +111,7 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
 
   const getProductsCallback = useCallback(async () => {
     await getProducts();
-  }, [page, categoryCode]);
+  }, [page, categoryCode, searchString]);
 
   useEffect(() => {
     getProductsCallback();
@@ -160,7 +160,6 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
           </TableBody>
         </Table>
       </TableContainer>
-
       {(totalPages > 1) &&
       <div className={classes.root}>
         <Pagination count={totalPages} color='primary' page={page} onChange={handleChange}
