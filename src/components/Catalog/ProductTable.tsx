@@ -62,13 +62,13 @@ const StyledTableRow = withStyles((theme) => ({
 function readableProductType(productType: ProductType): string {
   switch (productType) {
     case 'Piece':
-      return 'Штучный товар';
+      return 'Штучный';
     case 'Tobacco':
-      return 'Табачная продукция';
+      return 'Табак';
     case 'Alcohol':
-      return 'Алкогольная продукция';
+      return 'Алкоголь';
     case 'Weight':
-      return 'Весовой товар';
+      return 'Весовой';
   }
 }
 

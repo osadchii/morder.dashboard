@@ -43,18 +43,15 @@ export const Catalog = (): JSX.Element => {
   const onSearchSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const target = event.target as typeof event.target & {
-      search: { value: string };
-    };
+    const target = event.target as typeof event.target & { value: string };
 
-    const searchString = target.search.value;
+    const searchString = target.value;
     setSearchString(searchString);
   };
 
   return (
     <Container component='div' maxWidth={'xl'}>
       <CssBaseline />
-
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <AllInbox />
@@ -62,7 +59,6 @@ export const Catalog = (): JSX.Element => {
         <Typography component='h1' variant='h5'>
           Каталог
         </Typography>
-
         <Box display='flex'
              flexDirection='row'
              p={0}
@@ -84,15 +80,13 @@ export const Catalog = (): JSX.Element => {
             </Typography>
           </Box>
         </Box>
-
         <div className={classes.searchField}>
-          <form method={'post'} onSubmit={onSearchSubmit}>
-            <TextField id={'search'}
-                       name={'search'}
-                       label={'Поиск товаров'}
-                       type={'search'}
-            />
-          </form>
+          <TextField id={'search'}
+                     name={'search'}
+                     label={'Поиск товаров'}
+                     type={'search'}
+                     onChange={onSearchSubmit}
+          />
         </div>
         <Grid component='label' container spacing={2}>
           {showCategories &&
