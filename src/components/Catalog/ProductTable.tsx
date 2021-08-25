@@ -90,8 +90,8 @@ export const ProductTable = ({ categoryCode, searchString }: ProductTableProps):
     setLoading(true);
     try {
       const products = await ProductService.getProductPage(page, pageSize, categoryCode, searchString);
-      setRows(products.items);
       const totalPages = Math.ceil(products.count / pageSize);
+      setRows(products.items);
       setTotalPages(totalPages);
     } catch (error) {
       const { statusCode } = error.response.data;
@@ -144,7 +144,7 @@ export const ProductTable = ({ categoryCode, searchString }: ProductTableProps):
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.name}>
+              <StyledTableRow key={row._id}>
                 <StyledTableCell component='th' scope='row'>
                   {row.name}
                 </StyledTableCell>

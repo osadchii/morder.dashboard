@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export const Catalog = (): JSX.Element => {
 
   const classes = useStyles();
+
   const [currentCategory, setCategory] = useState('');
   const [searchString, setSearchString] = useState('');
   const [showCategories, setShowCategories] = useState(true);
