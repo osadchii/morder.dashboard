@@ -1,10 +1,10 @@
-import { Container, Typography } from '@material-ui/core';
+import { Container, Switch, Typography } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ProductTable } from './ProductTable';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { AllInbox } from '@material-ui/icons';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { CategoryTable } from './CategoryTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +33,11 @@ export const Catalog = (): JSX.Element => {
 
   const classes = useStyles();
   const [currentCategory, setCategory] = useState('');
+  const [showCategories, setShowCategories] = useState(true);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setShowCategories(event.target.checked);
+  };
 
   return (
     <Container component='div' maxWidth={'xl'}>
@@ -45,9 +50,17 @@ export const Catalog = (): JSX.Element => {
         <Typography component='h1' variant='h5'>
           Каталог
         </Typography>
+        <Switch
+          checked={showCategories}
+          onChange={handleChange}
+          color='primary'
+          name='showCategories'
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
+        {showCategories &&
         <CategoryTable category={currentCategory}
-                       setCategory={setCategory} />
-        <ProductTable categoryCode={currentCategory} />
+                       setCategory={setCategory} />}
+        <ProductTable categoryCode={showCategories ? currentCategory : ''} />
       </div>
     </Container>
   );
