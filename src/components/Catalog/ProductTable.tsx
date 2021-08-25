@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   table: {
-    minWidth: 700,
+    minWidth: 500,
   },
   root: {
     '& > *': {

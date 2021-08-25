@@ -150,7 +150,7 @@ export const Dashboard = (): JSX.Element => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth='lg' className={classes.container}>
+        <Container maxWidth='xl' className={classes.container}>
           <Switch>
             <Route path={'/company'} component={withRouter(Company)} />
             <Route path={'/catalog'} component={withRouter(Catalog)} />

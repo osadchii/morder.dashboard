@@ -18,15 +18,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
-  table: {
-    minWidth: 700,
-  },
-  root: {
-    '& > *': {
-      marginTop: theme.spacing(4),
-      marginBottom: theme.spacing(2),
-    },
-  },
 }));
 
 export const Catalog = (): JSX.Element => {
@@ -70,10 +61,16 @@ export const Catalog = (): JSX.Element => {
             </Grid>
           </Grid>
         </Typography>
-        {showCategories &&
-        <CategoryTable category={currentCategory}
-                       setCategory={setCategory} />}
-        <ProductTable categoryCode={showCategories ? currentCategory : undefined} />
+        <Grid component='label' container spacing={2}>
+          {showCategories && <Grid item xs={4}>
+
+            <CategoryTable category={currentCategory}
+                           setCategory={setCategory} />
+          </Grid>}
+          <Grid item xs={(showCategories ? 8 : 12)}>
+            <ProductTable categoryCode={showCategories ? currentCategory : undefined} />
+          </Grid>
+        </Grid>
       </div>
     </Container>
   );

@@ -19,7 +19,7 @@ import { CategoryTableProps } from './CategoryTable.props';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   table: {
-    minWidth: 700,
+    minWidth: 200,
   },
   root: {
     '& > *': {
