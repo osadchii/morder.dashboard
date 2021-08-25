@@ -1,4 +1,4 @@
-import { Container, Switch, Typography } from '@material-ui/core';
+import { Container, Grid, Switch, Typography } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ProductTable } from './ProductTable';
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,6 +37,9 @@ export const Catalog = (): JSX.Element => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setShowCategories(event.target.checked);
+    if (!showCategories) {
+      setCategory('');
+    }
   };
 
   return (
@@ -50,17 +53,27 @@ export const Catalog = (): JSX.Element => {
         <Typography component='h1' variant='h5'>
           Каталог
         </Typography>
-        <Switch
-          checked={showCategories}
-          onChange={handleChange}
-          color='primary'
-          name='showCategories'
-          inputProps={{ 'aria-label': 'primary checkbox' }}
-        />
+
+        <Typography component='div'>
+          <Grid component='label' container alignItems='center' spacing={1}>
+            <Grid item>
+              <Switch
+                checked={showCategories}
+                onChange={handleChange}
+                color='primary'
+                name='showCategories'
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+            </Grid>
+            <Grid item>
+              Отображать категории
+            </Grid>
+          </Grid>
+        </Typography>
         {showCategories &&
         <CategoryTable category={currentCategory}
                        setCategory={setCategory} />}
-        <ProductTable categoryCode={showCategories ? currentCategory : ''} />
+        <ProductTable categoryCode={showCategories ? currentCategory : undefined} />
       </div>
     </Container>
   );

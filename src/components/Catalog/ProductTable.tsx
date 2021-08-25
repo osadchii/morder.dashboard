@@ -88,9 +88,10 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
   const getProducts = async () => {
     setLoading(true);
     try {
-      const products = await ProductService.getProductPage(categoryCode, page, pageSize);
+      const products = await ProductService.getProductPage(page, pageSize, categoryCode);
       setRows(products.items);
-      setTotalPages(Math.ceil(products.count / pageSize));
+      const totalPages = Math.ceil(products.count / pageSize);
+      setTotalPages(totalPages);
     } catch (error) {
       const { statusCode } = error.response.data;
       let message = '';
@@ -159,10 +160,11 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
         </Table>
       </TableContainer>
 
+      {(totalPages > 1) &&
       <div className={classes.root}>
         <Pagination count={totalPages} color='primary' page={page} onChange={handleChange}
                     disabled={loading} />
-      </div>
+      </div>}
     </>
   );
 };
