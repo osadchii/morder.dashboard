@@ -7,10 +7,12 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import BusinessIcon from '@material-ui/icons/Business';
 import { CompanyModel } from '../../services/company/company.model';
-import React, { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { CompanyService } from '../../services/company/company.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { useHistory } from 'react-router-dom';
+import { Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,6 +49,16 @@ export const Company = (): JSX.Element => {
   const [companyData, setCompanyData] = useState(defaultData);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event?: SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
 
   const getCompany = useCallback(async () => {
     try {
@@ -68,7 +80,7 @@ export const Company = (): JSX.Element => {
     }
   }, []);
 
-  const onChange = (event: React.ChangeEvent): void => {
+  const onChange = (event: ChangeEvent): void => {
     const target = event.target as typeof event.target & {
       name: string;
       value: string;
@@ -91,12 +103,13 @@ export const Company = (): JSX.Element => {
     setCompanyData(newCompanyData);
   };
 
-  const onSubmit = async (event: React.FormEvent): Promise<void> => {
+  const onSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
 
     setLoading(true);
     try {
       await CompanyService.saveCompanyData(companyData);
+      setOpen(true);
       setErrorMessage('');
     } catch (error) {
       const { statusCode } = error.response.data;
@@ -177,6 +190,13 @@ export const Company = (): JSX.Element => {
             Сохранить
           </Button>
         </form>
+        <div>
+          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity='success'>
+              Данные сохранены
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
     </Container>
   );

@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { CategoryService } from '../../services/category/category.service';
 import { CategoryModel } from '../../services/category/category.model';
 import { CategoryTableProps } from './CategoryTable.props';
+import { ArrowUpward } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,6 +54,7 @@ const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
+      cursor: 'pointer',
     },
   },
 }))(TableRow);
@@ -128,7 +130,7 @@ export const CategoryTable = ({ category, setCategory }: CategoryTableProps): JS
       <Typography color={'error'}>
         {errorMessage}
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} elevation={10}>
         <Table className={classes.table} aria-label='customized table'>
           <TableHead>
             <TableRow>
@@ -139,7 +141,7 @@ export const CategoryTable = ({ category, setCategory }: CategoryTableProps): JS
             {category &&
             <StyledTableRow key={'to-up-category'}>
               <StyledTableCell component='th' scope='row' id={'to-up-category'} onClick={onClickToUpper}>
-                Наверх
+                <ArrowUpward />
               </StyledTableCell>
             </StyledTableRow>}
             {tableState.rows.map((row) => (

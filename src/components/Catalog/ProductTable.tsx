@@ -54,6 +54,7 @@ const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
+      cursor: 'pointer',
     },
   },
 }))(TableRow);
@@ -128,7 +129,7 @@ export const ProductTable = ({ categoryCode }: ProductTableProps): JSX.Element =
       <Typography color={'error'}>
         {errorMessage}
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} elevation={10}>
         <Table className={classes.table} aria-label='customized table'>
           <TableHead>
             <TableRow>
