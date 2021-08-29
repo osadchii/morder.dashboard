@@ -19,6 +19,8 @@ import { Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Company } from '../Company/Company';
 import { Catalog } from '../Catalog/Catalog';
+import { YandexMarketTable } from '../YandexMarket/YandexMarketTable';
+import { YandexMarketElement } from '../YandexMarket/YandexMarketElement';
 
 const drawerWidth = 240;
 
@@ -154,6 +156,8 @@ export const Dashboard = (): JSX.Element => {
           <Switch>
             <Route path={'/company'} component={withRouter(Company)} />
             <Route path={'/catalog'} component={withRouter(Catalog)} />
+            <Route path={'/yandexmarket/:id'} component={withRouter(YandexMarketElement)} />
+            <Route path={'/yandexmarket'} component={withRouter(YandexMarketTable)} />
           </Switch>
         </Container>
       </main>

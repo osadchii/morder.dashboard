@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ApiService } from '../api.service';
 import { CategoryModel } from './category.model';
-import { AuthService } from '../auth/auth.service';
 
 export class CategoryService {
   private static readonly getCategoriesByParentUrl = `${process.env.REACT_APP_API_BASE_URL}/category/getbyparentcode`;
@@ -13,7 +12,7 @@ export class CategoryService {
       },
       {
         headers: {
-          ...ApiService.AuthorizationHeaders(AuthService.getTokenFromStorage()),
+          ...ApiService.AuthorizationHeaders(),
         },
       },
     );
@@ -24,7 +23,7 @@ export class CategoryService {
   static async getUpperCategoryCode(erpCode: string): Promise<string> {
     const response = await axios.get(this.getCategoryByErpCode + `/${erpCode}`, {
       headers: {
-        ...ApiService.AuthorizationHeaders(AuthService.getTokenFromStorage()),
+        ...ApiService.AuthorizationHeaders(),
       },
     });
 

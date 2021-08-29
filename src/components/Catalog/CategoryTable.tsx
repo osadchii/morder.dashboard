@@ -1,14 +1,4 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
@@ -17,6 +7,8 @@ import { CategoryService } from '../../services/category/category.service';
 import { CategoryModel } from '../../services/category/category.model';
 import { CategoryTableProps } from './CategoryTable.props';
 import { ArrowUpward } from '@material-ui/icons';
+import { StyledTableCell } from '../Table/StyledTableCell';
+import { StyledTableRow } from '../Table/StyledTableRow';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,25 +31,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 13,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      cursor: 'pointer',
-    },
-  },
-}))(TableRow);
 
 interface TableState {
   rows: CategoryModel[];

@@ -1,11 +1,13 @@
+import { AuthService } from './auth/auth.service';
+
 interface AuthorizationHeader {
   'Authorization': string;
 }
 
 export class ApiService {
-  static AuthorizationHeaders(token: string): AuthorizationHeader {
+  static AuthorizationHeaders(): AuthorizationHeader {
     return {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${AuthService.getTokenFromStorage()}`,
     };
   }
 }

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { ProductGetPageModel } from './product.getpage.model';
 import { ApiService } from '../api.service';
 import { ProductPageModel } from './product.page.model';
-import { AuthService } from '../auth/auth.service';
 
 export class ProductService {
   private static readonly getProductPageUrl = `${process.env.REACT_APP_API_BASE_URL}/product/getpage`;
@@ -23,7 +22,7 @@ export class ProductService {
 
     const response = await axios.post(this.getProductPageUrl, body, {
       headers: {
-        ...ApiService.AuthorizationHeaders(AuthService.getTokenFromStorage()),
+        ...ApiService.AuthorizationHeaders(),
       },
     });
     return response.data as typeof response.data & ProductPageModel;

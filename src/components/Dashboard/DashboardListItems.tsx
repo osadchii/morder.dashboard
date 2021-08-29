@@ -43,7 +43,7 @@ export const DashboardListItems = (): JSX.Element => {
         <ListItemText primary='Заказы' />
       </ListItem>
       <Divider />
-      <ListItem component={Link} to={'/yandexmarket'} disabled={true}>
+      <ListItem component={Link} to={'/yandexmarket'}>
         <ListItemIcon>
           <Brightness1 />
         </ListItemIcon>

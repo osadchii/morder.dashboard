@@ -1,14 +1,4 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { ProductModel, ProductType } from '../../services/product/product.model';
@@ -17,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AuthService } from '../../services/auth/auth.service';
 import { useHistory } from 'react-router-dom';
 import { ProductTableProps } from './ProductTable.props';
+import { StyledTableCell } from '../Table/StyledTableCell';
+import { StyledTableRow } from '../Table/StyledTableRow';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,25 +31,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 13,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      cursor: 'pointer',
-    },
-  },
-}))(TableRow);
 
 function readableProductType(productType: ProductType): string {
   switch (productType) {
