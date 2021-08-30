@@ -1,14 +1,14 @@
 import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { AuthService } from '../../services/auth/auth.service';
 import { CategoryService } from '../../services/category/category.service';
 import { CategoryModel } from '../../services/category/category.model';
 import { CategoryTableProps } from './CategoryTable.props';
 import { ArrowUpward } from '@material-ui/icons';
 import { StyledTableCell } from '../Table/StyledTableCell';
 import { StyledTableRow } from '../Table/StyledTableRow';
+import { ApiService } from '../../services/api.service';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,18 +60,7 @@ export const CategoryTable = ({ category, setCategory }: CategoryTableProps): JS
         });
       }
     } catch (error) {
-      const response = error.response as typeof error.response & { statusCode: number };
-      const { statusCode } = response;
-      let message = '';
-      if (statusCode === 401
-        || statusCode === 403) {
-        AuthService.logout();
-        history.push('/login');
-      } else {
-        message = error.toString();
-      }
-
-      setErrorMessage(message);
+      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
   };
 

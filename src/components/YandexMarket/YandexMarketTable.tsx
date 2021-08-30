@@ -1,6 +1,5 @@
 import { useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
-import { AuthService } from '../../services/auth/auth.service';
 import {
   Container,
   Fab,
@@ -21,6 +20,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import { Brightness1 } from '@material-ui/icons';
 import AddIcon from '@material-ui/icons/Add';
+import { ApiService } from '../../services/api.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,17 +64,7 @@ export const YandexMarketTable = (): JSX.Element => {
       const items = await YandexMarketService.getList();
       setRows(items);
     } catch (error) {
-      const { statusCode } = error.response.data;
-      let message = '';
-      if (statusCode === 401
-        || statusCode === 403) {
-        AuthService.logout();
-        history.push('/login');
-      } else {
-        message = error.toString();
-      }
-
-      setErrorMessage(message);
+      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
   };
 

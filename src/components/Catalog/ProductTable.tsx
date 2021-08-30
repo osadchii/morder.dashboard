@@ -4,11 +4,11 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { ProductModel, ProductType } from '../../services/product/product.model';
 import { ProductService } from '../../services/product/product.service';
 import { makeStyles } from '@material-ui/core/styles';
-import { AuthService } from '../../services/auth/auth.service';
 import { useHistory } from 'react-router-dom';
 import { ProductTableProps } from './ProductTable.props';
 import { StyledTableCell } from '../Table/StyledTableCell';
 import { StyledTableRow } from '../Table/StyledTableRow';
+import { ApiService } from '../../services/api.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -67,17 +67,7 @@ export const ProductTable = ({ categoryCode, searchString }: ProductTableProps):
       setRows(products.items);
       setTotalPages(totalPages);
     } catch (error) {
-      const { statusCode } = error.response.data;
-      let message = '';
-      if (statusCode === 401
-        || statusCode === 403) {
-        AuthService.logout();
-        history.push('/login');
-      } else {
-        message = error.toString();
-      }
-
-      setErrorMessage(message);
+      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
     setLoading(false);
   };

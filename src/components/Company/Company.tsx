@@ -9,10 +9,10 @@ import BusinessIcon from '@material-ui/icons/Business';
 import { CompanyModel } from '../../services/company/company.model';
 import { ChangeEvent, FormEvent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { CompanyService } from '../../services/company/company.service';
-import { AuthService } from '../../services/auth/auth.service';
 import { useHistory } from 'react-router-dom';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { ApiService } from '../../services/api.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -66,17 +66,7 @@ export const Company = (): JSX.Element => {
       setCompanyData(company);
       setLoading(false);
     } catch (error) {
-      const { statusCode } = error.response.data;
-      let message = '';
-      if (statusCode === 401
-        || statusCode === 403) {
-        AuthService.logout();
-        history.push('/login');
-      } else {
-        message = error.toString();
-      }
-
-      setErrorMessage(message);
+      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
   }, []);
 
@@ -112,17 +102,7 @@ export const Company = (): JSX.Element => {
       setOpen(true);
       setErrorMessage('');
     } catch (error) {
-      const { statusCode } = error.response.data;
-      let message = '';
-      if (statusCode === 401
-        || statusCode === 403) {
-        AuthService.logout();
-        history.push('/login');
-      } else {
-        message = error.toString();
-      }
-
-      setErrorMessage(message);
+      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
     setLoading(false);
   };
