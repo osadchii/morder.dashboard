@@ -8,9 +8,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import React, { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { AuthService } from '../../services/auth/auth.service';
 import { useHistory } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 const Copyright = (): JSX.Element => {
   return (
@@ -58,7 +59,7 @@ export const SignIn = (): JSX.Element => {
     }
   }, []);
 
-  const onSubmit = async (event: React.FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     setLoading(true);
@@ -71,25 +72,26 @@ export const SignIn = (): JSX.Element => {
     const email = target.email.value;
     const password = target.password.value;
 
-    try {
-      await AuthService.login({
-        login: email,
-        password,
+    await AuthService.login({
+      login: email,
+      password,
+    })
+      .then(() => history.push('/'))
+      .catch((error: AxiosError) => {
+        let message = '';
+        if (error.response && error.response.status) {
+          const { status } = error.response;
+          if (status === 403 || status === 401) {
+            message = 'Неверный пароль';
+          }
+        }
+        if (!message) {
+          message = error.message;
+        }
+        setErrorMessage(message);
       });
-      history.push('/');
-    } catch (error) {
-      const { statusCode } = error.response.data;
-      let message: string;
-      if (statusCode === 401
-        || statusCode === 400) {
-        message = 'Неверный пароль';
-      } else {
-        message = error.toString();
-      }
-      setErrorMessage(message);
-    } finally {
-      setLoading(false);
-    }
+
+    setLoading(false);
   };
 
   return (
