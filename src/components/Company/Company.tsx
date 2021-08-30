@@ -99,13 +99,12 @@ export const Company = (): JSX.Element => {
     event.preventDefault();
 
     setLoading(true);
-    try {
-      await CompanyService.saveCompanyData(companyData);
-      setOpen(true);
-      setErrorMessage('');
-    } catch (error) {
-      ApiService.catchFetchError(error, history.push, setErrorMessage);
-    }
+    setErrorMessage('');
+    await CompanyService.saveCompanyData(companyData)
+      .catch((error: AxiosError) => {
+        ApiService.catchFetchError(error, history.push, setErrorMessage);
+      });
+    setOpen(true);
     setLoading(false);
   };
 
