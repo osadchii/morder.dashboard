@@ -9,6 +9,7 @@ import { ProductTableProps } from './ProductTable.props';
 import { StyledTableCell } from '../Table/StyledTableCell';
 import { StyledTableRow } from '../Table/StyledTableRow';
 import { ApiService } from '../../services/api.service';
+import { AxiosError } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,13 +62,15 @@ export const ProductTable = ({ categoryCode, searchString }: ProductTableProps):
 
   const getProducts = async () => {
     setLoading(true);
-    try {
-      const products = await ProductService.getProductPage(page, pageSize, categoryCode, searchString);
+    const products = await ProductService.getProductPage(page, pageSize, categoryCode, searchString)
+      .catch((error: AxiosError) => {
+        ApiService.catchFetchError(error, history.push, setErrorMessage);
+      });
+
+    if (products) {
       const totalPages = Math.ceil(products.count / pageSize);
       setRows(products.items);
       setTotalPages(totalPages);
-    } catch (error) {
-      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
     setLoading(false);
   };

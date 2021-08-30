@@ -9,6 +9,7 @@ import { StyledTableCell } from '../Table/StyledTableCell';
 import { StyledTableRow } from '../Table/StyledTableRow';
 import { ApiService } from '../../services/api.service';
 import { useHistory } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,17 +51,16 @@ export const CategoryTable = ({ category, setCategory }: CategoryTableProps): JS
   } as TableState);
 
   const getCategories = async () => {
-    try {
-      const categories = await CategoryService.getByParentCode(category);
-      if (categories.length > 0) {
-        const parent = categories[0].parentCode ?? '';
-        setTableState({
-          parent: parent,
-          rows: categories,
-        });
-      }
-    } catch (error) {
-      ApiService.catchFetchError(error, history.push, setErrorMessage);
+    const categories = await CategoryService.getByParentCode(category)
+      .catch((error: AxiosError) => {
+        ApiService.catchFetchError(error, history.push, setErrorMessage);
+      });
+    if (categories && categories.length > 0) {
+      const parent = categories[0].parentCode ?? '';
+      setTableState({
+        parent: parent,
+        rows: categories,
+      });
     }
   };
 

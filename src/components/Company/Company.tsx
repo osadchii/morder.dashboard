@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { ApiService } from '../../services/api.service';
+import { AxiosError } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,13 +62,14 @@ export const Company = (): JSX.Element => {
 
 
   const getCompany = useCallback(async () => {
-    try {
-      const company = await CompanyService.getCompanyData();
+    const company = await CompanyService.getCompanyData()
+      .catch((error: AxiosError) => {
+        ApiService.catchFetchError(error, history.push, setErrorMessage);
+      });
+    if (company) {
       setCompanyData(company);
-      setLoading(false);
-    } catch (error) {
-      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
+    setLoading(false);
   }, []);
 
   const onChange = (event: ChangeEvent): void => {

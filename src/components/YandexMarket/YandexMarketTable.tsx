@@ -21,6 +21,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Brightness1 } from '@material-ui/icons';
 import AddIcon from '@material-ui/icons/Add';
 import { ApiService } from '../../services/api.service';
+import { AxiosError } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,14 +58,15 @@ export const YandexMarketTable = (): JSX.Element => {
   const classes = useStyles();
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [rows, setRows] = useState([] as YandexMarketModel[]);
+  const [rows, setRows] = useState<YandexMarketModel[]>([]);
 
   const getItems = async () => {
-    try {
-      const items = await YandexMarketService.getList();
+    const items = await YandexMarketService.getList()
+      .catch((error: AxiosError) => {
+        ApiService.catchFetchError(error, history.push, setErrorMessage);
+      });
+    if (items) {
       setRows(items);
-    } catch (error) {
-      ApiService.catchFetchError(error, history.push, setErrorMessage);
     }
   };
 

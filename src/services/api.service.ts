@@ -1,4 +1,5 @@
 import { AuthService } from './auth/auth.service';
+import { AxiosError } from 'axios';
 
 interface AuthorizationHeader {
   'Authorization': string;
@@ -12,29 +13,20 @@ export class ApiService {
   }
 
 
-  static catchFetchError(error: Record<string, unknown>,
+  static catchFetchError(error: AxiosError,
                          pushHistory: (url: string) => void,
                          setErrorText?: (text: string) => void): void {
 
-    console.log('catch');
-    if (!error.hasOwnProperty('response')) {
-      return;
-    }
-
-    const response = error.response as typeof error.response & { status: number };
-    const { status } = response;
-    console.log(response);
-
-    console.log(status);
-
-    if (status === 403
-      || status === 401) {
-      AuthService.logout();
-      pushHistory('/login');
-    } else {
-      if (setErrorText) {
-        setErrorText(error.toString());
+    if (error.response && error.response.status) {
+      const { status } = error.response;
+      if (status === 403 || status === 401) {
+        AuthService.logout();
+        pushHistory('/login');
+        return;
       }
+    }
+    if (setErrorText) {
+      setErrorText(error.message);
     }
   }
 }
