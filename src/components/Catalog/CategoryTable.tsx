@@ -60,7 +60,8 @@ export const CategoryTable = ({ category, setCategory }: CategoryTableProps): JS
         });
       }
     } catch (error) {
-      const { statusCode } = error.response.data;
+      const response = error.response as typeof error.response & { statusCode: number };
+      const { statusCode } = response;
       let message = '';
       if (statusCode === 401
         || statusCode === 403) {
