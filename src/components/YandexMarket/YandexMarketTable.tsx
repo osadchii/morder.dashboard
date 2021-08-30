@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { ReactNode, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import {
   Container,
   Fab,
@@ -72,12 +72,18 @@ export const YandexMarketTable = (): JSX.Element => {
 
   const getItemsCallback = useCallback(async () => {
     await getItems();
-  }, [getItems]);
+  }, []);
 
   useEffect(() => {
     getItemsCallback();
   }, [getItemsCallback]);
 
+  const onClick = (event: SyntheticEvent) => {
+    const target = event.target as typeof event.target & { parentNode: ReactNode };
+    const { parentNode } = target;
+    const { id } = parentNode as typeof parentNode & { id: string };
+    history.push(`/yandexmarket/${id}`);
+  };
 
   return (
     <>
@@ -105,7 +111,7 @@ export const YandexMarketTable = (): JSX.Element => {
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
-                  <StyledTableRow key={row._id}>
+                  <StyledTableRow key={row._id} id={row._id} onClick={onClick}>
                     <StyledTableCell component='th' scope='row'>
                       {row.name}
                     </StyledTableCell>
