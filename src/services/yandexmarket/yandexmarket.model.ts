@@ -16,5 +16,8 @@ export interface YandexMarketModel {
   defaultVendorCode?: string;
   productTypes: ProductType[];
   lastFeedGeneration: Date;
+  campaignId: string;
+  authToken: string;
+  clientId: string;
 
 }

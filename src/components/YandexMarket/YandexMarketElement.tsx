@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const defaultValues: YandexMarketModel = {
+  authToken: '',
+  campaignId: '',
+  clientId: '',
   _id: '',
   active: false,
   feedGenerationInterval: 0,
@@ -140,6 +143,57 @@ export const YandexMarketElement = (): JSX.Element => {
                   fullWidth
                   id='name'
                   label='Название'
+                  {...field}
+                />
+            }
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            name={'authToken'}
+            render={
+              ({ field }) =>
+                <TextField
+                  variant={'outlined'}
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='authToken'
+                  label='oAuth Token'
+                  {...field}
+                />
+            }
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            name={'clientId'}
+            render={
+              ({ field }) =>
+                <TextField
+                  variant={'outlined'}
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='clientId'
+                  label='ID приложения'
+                  {...field}
+                />
+            }
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            name={'campaignId'}
+            render={
+              ({ field }) =>
+                <TextField
+                  variant={'outlined'}
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='campaignId'
+                  label='Идентификатор компании'
                   {...field}
                 />
             }
