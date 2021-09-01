@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const defaultValues: YandexMarketModel = {
+  updatePricesByApi: false,
   updateMarketSkus: false,
   updateMarketSkusInterval: 0,
   authToken: '',
@@ -265,6 +266,23 @@ export const YandexMarketElement = (): JSX.Element => {
                 />
             }
             rules={{ min: 0, max: 999999 }}
+          />
+          <FormControlLabel
+            label='Обновлять цены по API'
+            control={
+              <Controller
+                control={control}
+                name={'updatePricesByApi'}
+                render={
+                  ({ field }) =>
+                    <Checkbox
+                      color='primary'
+                      checked={field.value}
+                      {...field}
+                    />
+                }
+              />
+            }
           />
           <Button
             type='submit'
