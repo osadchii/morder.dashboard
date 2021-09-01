@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const defaultValues: YandexMarketModel = {
+  updateMarketSkus: false,
+  updateMarketSkusInterval: 0,
   authToken: '',
   campaignId: '',
   clientId: '',
@@ -211,6 +213,47 @@ export const YandexMarketElement = (): JSX.Element => {
                   type={'number'}
                   fullWidth
                   label='Минимальная цена'
+                  {...field}
+                  onChange={(e) =>
+                    field.onChange(
+                      Number.isNaN(parseInt(e.target.value))
+                        ? 0
+                        : parseInt(e.target.value),
+                    )
+                  }
+                />
+            }
+            rules={{ min: 0, max: 999999 }}
+          />
+          <FormControlLabel
+            label='Обновлять идентификаторы Яндекс'
+            control={
+              <Controller
+                control={control}
+                name={'updateMarketSkus'}
+                render={
+                  ({ field }) =>
+                    <Checkbox
+                      color='primary'
+                      checked={field.value}
+                      {...field}
+                    />
+                }
+              />
+            }
+          />
+          <Controller
+            control={control}
+            name={'updateMarketSkusInterval'}
+            render={
+              ({ field }) =>
+                <TextField
+                  variant={'outlined'}
+                  margin='normal'
+                  required
+                  type={'number'}
+                  fullWidth
+                  label='Интервал обновления идентификаторов Яндекс'
                   {...field}
                   onChange={(e) =>
                     field.onChange(

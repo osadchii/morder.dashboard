@@ -8,6 +8,8 @@ export interface YandexMarketModel {
   nullifyStocks: boolean;
   specialPriceName?: string;
   feedGenerationInterval: number;
+  updateMarketSkus: boolean;
+  updateMarketSkusInterval: number;
   minimalPrice: number;
   defaultHeight?: number;
   defaultLength?: number;
