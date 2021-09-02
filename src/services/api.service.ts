@@ -12,7 +12,6 @@ export class ApiService {
     };
   }
 
-
   static catchFetchError(error: AxiosError,
                          pushHistory: (url: string) => void,
                          setErrorText?: (text: string) => void): void {
