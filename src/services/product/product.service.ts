@@ -5,6 +5,7 @@ import { ProductPageModel } from './product.page.model';
 
 export class ProductService {
   private static readonly getProductPageUrl = `${process.env.REACT_APP_API_BASE_URL}/product/getpage`;
+  private static readonly setProductMarketplaceSettings = `${process.env.REACT_APP_API_BASE_URL}/product/setMarketplaceSettings`;
 
   static async getProductPage(page: number, perPage: number, categoryCode?: string, searchString?: string): Promise<ProductPageModel> {
     const body: ProductGetPageModel = {
@@ -26,6 +27,34 @@ export class ProductService {
       },
     });
     return response.data as typeof response.data & ProductPageModel;
+  }
+
+  static async setProductNullifyStockFlag(erpCode: string, marketplaceId: string, nullifyStock: boolean): Promise<void> {
+    await axios.post(this.setProductMarketplaceSettings, {
+        erpCode: erpCode,
+        marketplaceId: marketplaceId,
+        nullifyStock: nullifyStock,
+      },
+      {
+        headers: {
+          ...ApiService.AuthorizationHeaders(),
+        },
+      },
+    );
+  }
+
+  static async setProductIgnoreRestrictionsFlag(erpCode: string, marketplaceId: string, ignoreRestrictions: boolean): Promise<void> {
+    await axios.post(this.setProductMarketplaceSettings, {
+        erpCode: erpCode,
+        marketplaceId: marketplaceId,
+        ignoreRestrictions: ignoreRestrictions,
+      },
+      {
+        headers: {
+          ...ApiService.AuthorizationHeaders(),
+        },
+      },
+    );
   }
 
 }

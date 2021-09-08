@@ -3,4 +3,8 @@ export interface CategoryModel {
   name: string;
   erpCode: string;
   parentCode?: string;
+  marketplaceSettings?: {
+    marketplaceId: string;
+    blocked: boolean;
+  }[];
 }

@@ -155,6 +155,7 @@ export const Dashboard = (): JSX.Element => {
         <Container maxWidth='xl' className={classes.container}>
           <Switch>
             <Route path={'/company'} component={withRouter(Company)} />
+            <Route path={'/catalog/:marketplaceId'} component={withRouter(Catalog)} />
             <Route path={'/catalog'} component={withRouter(Catalog)} />
             <Route path={'/yandexmarket/:id'} component={withRouter(YandexMarketElement)} />
             <Route path={'/yandexmarket'} component={withRouter(YandexMarketTable)} />

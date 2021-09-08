@@ -89,7 +89,7 @@ export const Catalog = (): JSX.Element => {
                      onChange={onSearchSubmit}
           />
         </div>
-        <Grid component='label' container spacing={2}>
+        <Grid container spacing={2}>
           {showCategories &&
           <Grid item xs={4}>
             <CategoryTable category={currentCategory}

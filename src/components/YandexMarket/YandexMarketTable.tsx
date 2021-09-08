@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { ReactNode, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import {
+  Button,
   Container,
   Fab,
   Paper,
@@ -82,7 +83,13 @@ export const YandexMarketTable = (): JSX.Element => {
     const target = event.target as typeof event.target & { parentNode: ReactNode };
     const { parentNode } = target;
     const { id } = parentNode as typeof parentNode & { id: string };
-    history.push(`/yandexmarket/${id}`);
+    if (id) {
+      history.push(`/yandexmarket/${id}`);
+    }
+  };
+
+  const onCatalogButtonClick = (_id: string) => {
+    history.push(`/catalog/${_id}`);
   };
 
   return (
@@ -106,7 +113,7 @@ export const YandexMarketTable = (): JSX.Element => {
                   <StyledTableCell>Наименование</StyledTableCell>
                   <StyledTableCell align='right'>Активна</StyledTableCell>
                   <StyledTableCell align='right'>Минимальная цена</StyledTableCell>
-                  <StyledTableCell align='right'>Дата фида</StyledTableCell>
+                  <StyledTableCell align='right'>Действия</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -117,7 +124,10 @@ export const YandexMarketTable = (): JSX.Element => {
                     </StyledTableCell>
                     <StyledTableCell align='right'>{row.active.toString()}</StyledTableCell>
                     <StyledTableCell align='right'>{row.minimalPrice}</StyledTableCell>
-                    <StyledTableCell align='right'>{row.lastFeedGeneration?.toString()}</StyledTableCell>
+                    <StyledTableCell align='right'>
+                      <Button variant='contained' color='primary' onClick={() => onCatalogButtonClick(row._id)}>
+                        Управление каталогом
+                      </Button></StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
