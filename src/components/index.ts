@@ -5,3 +5,5 @@ export * from './Table/StyledTableRow';
 export * from './Table/StyledTableCell';
 export * from './YandexMarket/YandexMarketTable';
 export * from './YandexMarket/YandexMarketElement';
+export * from './SpecialPriceSelect/SpecialPriceSelect';
+export * from './ProductTypeBox/ProductTypeBox';

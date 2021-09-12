@@ -1,4 +1,4 @@
-import { Control, Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,12 +10,13 @@ import { Brightness1 } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { YandexMarketModel } from '../../services/yandexmarket/yandexmarket.model';
 import { useHistory, useParams } from 'react-router-dom';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { YandexMarketService } from '../../services/yandexmarket/yandexmarket.service';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../services/api.service';
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel } from '@material-ui/core';
-import { ProductType } from '../../services/product/product.model';
+import { SpecialPriceSelect } from '../SpecialPriceSelect/SpecialPriceSelect';
+import { ProductTypeBoxes } from '../ProductTypeBox/ProductTypeBox';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,94 +65,6 @@ const defaultValues: YandexMarketModel = {
   productTypes: [],
 };
 
-interface ProductTypeBoxProps {
-  control: Control<YandexMarketModel>,
-  setValue: (field: 'productTypes', value: ProductType[]) => void
-}
-
-const ProductTypeBoxes = ({ control, setValue }: ProductTypeBoxProps) => {
-
-  const box = useWatch({
-    control,
-    name: 'productTypes',
-    defaultValue: [],
-  });
-
-  const hasProductType = (productType: ProductType): boolean => {
-    return !!box.find((elem) => elem === productType);
-  };
-
-  const onChangeProductTypeFlag = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    const name = target.name as ProductType;
-    const value = target.checked;
-
-    if (value) {
-      setValue('productTypes', [...box, name]);
-    } else {
-      const newTypes: ProductType[] = [];
-      for (const productType of box) {
-        if (productType != name) {
-          newTypes.push(productType);
-        }
-      }
-      setValue('productTypes', newTypes);
-    }
-  };
-
-  return (
-    <>
-      <FormControlLabel
-        control={
-          <Checkbox
-            name='Piece'
-            color='primary'
-            checked={hasProductType('Piece')}
-            onChange={onChangeProductTypeFlag}
-          />
-        }
-        label='Штучные товары'
-      />
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            name='Weight'
-            color='primary'
-            checked={hasProductType('Weight')}
-            onChange={onChangeProductTypeFlag}
-          />
-        }
-        label='Весовые товары'
-      />
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            name='Alcohol'
-            color='primary'
-            checked={hasProductType('Alcohol')}
-            onChange={onChangeProductTypeFlag}
-          />
-        }
-        label='Алкогольная продукция'
-      />
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            name='Tobacco'
-            color='primary'
-            checked={hasProductType('Tobacco')}
-            onChange={onChangeProductTypeFlag}
-          />
-        }
-        label='Табачная продукция'
-      />
-    </>
-  );
-};
-
 export const YandexMarketElement = (): JSX.Element => {
 
   const history = useHistory();
@@ -198,12 +111,11 @@ export const YandexMarketElement = (): JSX.Element => {
         <form className={classes.form} noValidate
               onSubmit={onSubmit}
               method={'post'}>
-          <Accordion expanded>
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
+              aria-controls='panel2a-content'
+              id='panel2a-header'>
               <Typography className={classes.heading}>Основные настройки</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -283,6 +195,15 @@ export const YandexMarketElement = (): JSX.Element => {
                   }
                   rules={{ min: 0, max: 999999 }}
                 />
+                <Controller
+                  control={control}
+                  name={'specialPriceName'}
+                  render={
+                    ({ field }) =>
+                      <SpecialPriceSelect {...field} value={field.value} setValue={setValue} />
+                  }
+                  rules={{ min: 0, max: 999999 }}
+                />
 
               </div>
             </AccordionDetails>
@@ -291,8 +212,7 @@ export const YandexMarketElement = (): JSX.Element => {
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel2a-content'
-              id='panel2a-header'
-            >
+              id='panel2a-header'>
               <Typography className={classes.heading}>Виды товаров</Typography>
             </AccordionSummary>
             <AccordionDetails>
