@@ -49,29 +49,29 @@ export const DashboardListItems = (): JSX.Element => {
         </ListItemIcon>
         <ListItemText primary='Яндекс.Маркет' />
       </ListItem>
-      <ListItem component={Link} to={'/sbermegamarket'} disabled={true}>
+      <ListItem component={Link} to={'/sbermegamarket'}>
         <ListItemIcon>
           <Brightness1 />
         </ListItemIcon>
         <ListItemText primary='СберМегаМаркет' />
       </ListItem>
-      <ListItem component={Link} to={'/ozon'} disabled={true}>
+      <ListItem component={Link} to={'/ozon'}>
         <ListItemIcon>
           <Brightness1 />
         </ListItemIcon>
         <ListItemText primary='Озон' />
+      </ListItem>
+      <ListItem component={Link} to={'/meso'}>
+        <ListItemIcon>
+          <Brightness1 />
+        </ListItemIcon>
+        <ListItemText primary='MESO' />
       </ListItem>
       <ListItem component={Link} to={'/wildberries'} disabled={true}>
         <ListItemIcon>
           <Brightness1 />
         </ListItemIcon>
         <ListItemText primary='Wildberries' />
-      </ListItem>
-      <ListItem component={Link} to={'/meso'} disabled={true}>
-        <ListItemIcon>
-          <Brightness1 />
-        </ListItemIcon>
-        <ListItemText primary='MESO' />
       </ListItem>
       <ListItem component={Link} to={'/aliexpress'} disabled={true}>
         <ListItemIcon>

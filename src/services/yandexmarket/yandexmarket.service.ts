@@ -27,12 +27,11 @@ export class YandexMarketService {
 
   static async update(item: YandexMarketModel): Promise<void> {
     const url = `${this.updateUrl}/${item._id}`;
-    const response = await axios.post(url, item, {
+    await axios.post(url, item, {
       headers: {
         ...ApiService.AuthorizationHeaders(),
       },
     });
-    console.log(response);
   }
 
 }

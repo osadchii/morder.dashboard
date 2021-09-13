@@ -1,19 +1,19 @@
-import { useWatch } from 'react-hook-form';
+import { Control, useWatch } from 'react-hook-form';
 import { ProductType } from '../../services/product/product.model';
 import React from 'react';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { ProductTypeBoxProps } from './ProductTypeBox.props';
 
-export const ProductTypeBoxes = ({ control, setValue }: ProductTypeBoxProps) => {
+export const ProductTypeBoxes = ({ controller, setValue }: ProductTypeBoxProps): JSX.Element => {
 
   const box = useWatch({
-    control,
+    control: controller as unknown as Control<{ productTypes: ProductType[] }>,
     name: 'productTypes',
     defaultValue: [],
   });
 
   const hasProductType = (productType: ProductType): boolean => {
-    return !!box.find((elem) => elem === productType);
+    return !!box.find((elem: ProductType) => elem === productType);
   };
 
   const onChangeProductTypeFlag = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,8 +1,9 @@
 import { Control } from 'react-hook-form';
-import { YandexMarketModel } from '../../services/yandexmarket/yandexmarket.model';
 import { ProductType } from '../../services/product/product.model';
+import { YandexMarketModel } from '../../services/yandexmarket/yandexmarket.model';
+import { SberMegaMarketModel } from '../../services/sbermegamarket/sbermegamarket.model';
 
 export interface ProductTypeBoxProps {
-  control: Control<YandexMarketModel>,
+  controller: Control<YandexMarketModel> | Control<SberMegaMarketModel>,
   setValue: (field: 'productTypes', value: ProductType[]) => void
 }

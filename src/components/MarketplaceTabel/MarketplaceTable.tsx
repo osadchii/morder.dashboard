@@ -23,6 +23,13 @@ import { Brightness1 } from '@material-ui/icons';
 import AddIcon from '@material-ui/icons/Add';
 import { ApiService } from '../../services/api.service';
 import { AxiosError } from 'axios';
+import { MarketplaceTableProps } from './MarketplaceTable.props';
+import { SberMegaMarketModel } from '../../services/sbermegamarket/sbermegamarket.model';
+import { SberMegaMarketService } from '../../services/sbermegamarket/sbermegamarket.service';
+import { OzonModel } from '../../services/ozon/ozon.model';
+import { OzonService } from '../../services/ozon/ozon.service';
+import { MesoModel } from '../../services/meso/meso.model';
+import { MesoService } from '../../services/meso/meso.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,22 +59,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const YandexMarketTable = (): JSX.Element => {
+export const MarketplaceTable = ({ marketplaceType }: MarketplaceTableProps): JSX.Element => {
 
   const history = useHistory();
-
   const classes = useStyles();
 
+  type MarketplaceModel = YandexMarketModel | SberMegaMarketModel | OzonModel | MesoModel;
+
   const [errorMessage, setErrorMessage] = useState('');
-  const [rows, setRows] = useState<YandexMarketModel[]>([]);
+  const [rows, setRows] = useState<MarketplaceModel[]>([]);
 
   const getItems = async () => {
-    const items = await YandexMarketService.getList()
-      .catch((error: AxiosError) => {
-        ApiService.catchFetchError(error, history.push, setErrorMessage);
-      });
-    if (items) {
-      setRows(items);
+    if (marketplaceType === 'YandexMarket') {
+      const items = await YandexMarketService.getList()
+        .catch((error: AxiosError) => {
+          ApiService.catchFetchError(error, history.push, setErrorMessage);
+        });
+      if (items) {
+        setRows(items);
+      }
+    }
+    if (marketplaceType === 'SberMegaMarket') {
+      const items = await SberMegaMarketService.getList()
+        .catch((error: AxiosError) => {
+          ApiService.catchFetchError(error, history.push, setErrorMessage);
+        });
+      if (items) {
+        setRows(items);
+      }
+    }
+    if (marketplaceType === 'Ozon') {
+      const items = await OzonService.getList()
+        .catch((error: AxiosError) => {
+          ApiService.catchFetchError(error, history.push, setErrorMessage);
+        });
+      if (items) {
+        setRows(items);
+      }
+    }
+    if (marketplaceType === 'Meso') {
+      const items = await MesoService.getList()
+        .catch((error: AxiosError) => {
+          ApiService.catchFetchError(error, history.push, setErrorMessage);
+        });
+      if (items) {
+        setRows(items);
+      }
     }
   };
 
@@ -84,7 +121,7 @@ export const YandexMarketTable = (): JSX.Element => {
     const { parentNode } = target;
     const { id } = parentNode as typeof parentNode & { id: string };
     if (id) {
-      history.push(`/yandexmarket/${id}`);
+      history.push(`/${marketplaceType}/${id}`);
     }
   };
 
@@ -101,7 +138,7 @@ export const YandexMarketTable = (): JSX.Element => {
             <Brightness1 />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Yandex.Market
+            {marketplaceType}
           </Typography>
           <Typography color={'error'}>
             {errorMessage}

@@ -19,8 +19,9 @@ import { Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Company } from '../Company/Company';
 import { Catalog } from '../Catalog/Catalog';
-import { YandexMarketTable } from '../YandexMarket/YandexMarketTable';
 import { YandexMarketElement } from '../YandexMarket/YandexMarketElement';
+import { MarketplaceTable } from '../MarketplaceTabel/MarketplaceTable';
+import { SberMegaMarketElement } from '../SberMegaMarket/SberMegaMarketElement';
 
 const drawerWidth = 240;
 
@@ -158,7 +159,13 @@ export const Dashboard = (): JSX.Element => {
             <Route path={'/catalog/:marketplaceId'} component={withRouter(Catalog)} />
             <Route path={'/catalog'} component={withRouter(Catalog)} />
             <Route path={'/yandexmarket/:id'} component={withRouter(YandexMarketElement)} />
-            <Route path={'/yandexmarket'} component={withRouter(YandexMarketTable)} />
+            <Route path={'/yandexmarket'}
+                   component={withRouter(() => <MarketplaceTable marketplaceType={'YandexMarket'} />)} />
+            <Route path={'/sbermegamarket/:id'} component={withRouter(SberMegaMarketElement)} />
+            <Route path={'/sbermegamarket'}
+                   component={withRouter(() => <MarketplaceTable marketplaceType={'SberMegaMarket'} />)} />
+            <Route path={'/ozon'} component={withRouter(() => <MarketplaceTable marketplaceType={'Ozon'} />)} />
+            <Route path={'/meso'} component={withRouter(() => <MarketplaceTable marketplaceType={'Meso'} />)} />
           </Switch>
         </Container>
       </main>

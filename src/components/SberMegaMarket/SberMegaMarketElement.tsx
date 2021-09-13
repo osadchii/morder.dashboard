@@ -8,15 +8,15 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Brightness1 } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { YandexMarketModel } from '../../services/yandexmarket/yandexmarket.model';
 import { useHistory, useParams } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
-import { YandexMarketService } from '../../services/yandexmarket/yandexmarket.service';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../services/api.service';
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SpecialPriceSelect } from '../SpecialPriceSelect/SpecialPriceSelect';
 import { ProductTypeBoxes } from '../ProductTypeBox/ProductTypeBox';
+import { SberMegaMarketModel } from '../../services/sbermegamarket/sbermegamarket.model';
+import { SberMegaMarketService } from '../../services/sbermegamarket/sbermegamarket.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,24 +48,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const defaultValues: YandexMarketModel = {
-  updatePricesByApi: false,
-  updateMarketSkus: false,
-  updateMarketSkusInterval: 0,
-  authToken: '',
-  campaignId: '',
-  clientId: '',
+const defaultValues: SberMegaMarketModel = {
   _id: '',
   active: false,
   feedGenerationInterval: 0,
-  lastFeedGeneration: new Date(),
   minimalPrice: 0,
   name: '',
   nullifyStocks: false,
+  orderBefore: 0,
+  outletId: 0,
   productTypes: [],
+  shippingDays: 0,
 };
 
-export const YandexMarketElement = (): JSX.Element => {
+export const SberMegaMarketElement = (): JSX.Element => {
 
   const history = useHistory();
   const params = useParams();
@@ -74,17 +70,17 @@ export const YandexMarketElement = (): JSX.Element => {
 
   const { id } = params as typeof params & { id: string };
 
-  const { control, handleSubmit, reset, setValue } = useForm<YandexMarketModel>({ defaultValues });
+  const { control, handleSubmit, reset, setValue } = useForm<SberMegaMarketModel>({ defaultValues });
 
-  const onSubmit = handleSubmit(async (data: YandexMarketModel) => {
-    await YandexMarketService.update(data)
+  const onSubmit = handleSubmit(async (data: SberMegaMarketModel) => {
+    await SberMegaMarketService.update(data)
       .catch((error: AxiosError) => {
         ApiService.catchFetchError(error, history.push);
       });
   });
 
   const getItemCallBack = useCallback(async () => {
-    const item = await YandexMarketService.getById(id)
+    const item = await SberMegaMarketService.getById(id)
       .catch((error: AxiosError) => {
         ApiService.catchFetchError(error, history.push);
       });
@@ -106,7 +102,7 @@ export const YandexMarketElement = (): JSX.Element => {
           <Brightness1 />
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Yandex.Market
+          SberMegaMarket
         </Typography>
         <form className={classes.form} noValidate
               onSubmit={onSubmit}
@@ -231,115 +227,6 @@ export const YandexMarketElement = (): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <div className={classes.root}>
-                <Controller
-                  control={control}
-                  name={'authToken'}
-                  render={
-                    ({ field }) =>
-                      <TextField
-                        variant={'outlined'}
-                        margin='normal'
-                        required
-                        fullWidth
-                        id='authToken'
-                        label='oAuth Token'
-                        {...field}
-                      />
-                  }
-                  rules={{ required: true }}
-                />
-                <Controller
-                  control={control}
-                  name={'clientId'}
-                  render={
-                    ({ field }) =>
-                      <TextField
-                        variant={'outlined'}
-                        margin='normal'
-                        required
-                        fullWidth
-                        id='clientId'
-                        label='ID приложения'
-                        {...field}
-                      />
-                  }
-                  rules={{ required: true }}
-                />
-                <Controller
-                  control={control}
-                  name={'campaignId'}
-                  render={
-                    ({ field }) =>
-                      <TextField
-                        variant={'outlined'}
-                        margin='normal'
-                        required
-                        fullWidth
-                        id='campaignId'
-                        label='Идентификатор компании'
-                        {...field}
-                      />
-                  }
-                  rules={{ required: true }}
-                />
-                <FormControlLabel
-                  label='Обновлять идентификаторы Яндекс'
-                  control={
-                    <Controller
-                      control={control}
-                      name={'updateMarketSkus'}
-                      render={
-                        ({ field }) =>
-                          <Checkbox
-                            color='primary'
-                            checked={field.value}
-                            {...field}
-                          />
-                      }
-                    />
-                  }
-                />
-                <Controller
-                  control={control}
-                  name={'updateMarketSkusInterval'}
-                  render={
-                    ({ field }) =>
-                      <TextField
-                        variant={'outlined'}
-                        margin='normal'
-                        required
-                        type={'number'}
-                        fullWidth
-                        label='Интервал обновления идентификаторов Яндекс'
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(
-                            Number.isNaN(parseInt(e.target.value))
-                              ? 0
-                              : parseInt(e.target.value),
-                          )
-                        }
-                      />
-                  }
-                  rules={{ min: 0, max: 999999 }}
-                />
-                <FormControlLabel
-                  label='Обновлять цены по API'
-                  control={
-                    <Controller
-                      control={control}
-                      name={'updatePricesByApi'}
-                      render={
-                        ({ field }) =>
-                          <Checkbox
-                            color='primary'
-                            checked={field.value}
-                            {...field}
-                          />
-                      }
-                    />
-                  }
-                />
               </div>
             </AccordionDetails>
           </Accordion>
