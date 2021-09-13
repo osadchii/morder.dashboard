@@ -200,7 +200,54 @@ export const SberMegaMarketElement = (): JSX.Element => {
                   }
                   rules={{ min: 0, max: 999999 }}
                 />
-
+                <Controller
+                  control={control}
+                  name={'shippingDays'}
+                  render={
+                    ({ field }) =>
+                      <TextField
+                        variant={'outlined'}
+                        margin='normal'
+                        required
+                        type={'number'}
+                        fullWidth
+                        label='Доставка за, дней'
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(
+                            Number.isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
+                          )
+                        }
+                      />
+                  }
+                  rules={{ min: 0, max: 999999 }}
+                />
+                <Controller
+                  control={control}
+                  name={'orderBefore'}
+                  render={
+                    ({ field }) =>
+                      <TextField
+                        variant={'outlined'}
+                        margin='normal'
+                        required
+                        type={'number'}
+                        fullWidth
+                        label='При заказе до, часов'
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(
+                            Number.isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
+                          )
+                        }
+                      />
+                  }
+                  rules={{ min: 0, max: 999999 }}
+                />
               </div>
             </AccordionDetails>
           </Accordion>
@@ -227,6 +274,54 @@ export const SberMegaMarketElement = (): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <div className={classes.root}>
+                <Controller
+                  control={control}
+                  name={'feedGenerationInterval'}
+                  render={
+                    ({ field }) =>
+                      <TextField
+                        variant={'outlined'}
+                        margin='normal'
+                        required
+                        type={'number'}
+                        fullWidth
+                        label='Интервал обновления фида'
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(
+                            Number.isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
+                          )
+                        }
+                      />
+                  }
+                  rules={{ min: 0, max: 999999 }}
+                />
+                <Controller
+                  control={control}
+                  name={'outletId'}
+                  render={
+                    ({ field }) =>
+                      <TextField
+                        variant={'outlined'}
+                        margin='normal'
+                        required
+                        type={'number'}
+                        fullWidth
+                        label='Идентификатор склада'
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(
+                            Number.isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
+                          )
+                        }
+                      />
+                  }
+                  rules={{ min: 0, max: 999999 }}
+                />
               </div>
             </AccordionDetails>
           </Accordion>
